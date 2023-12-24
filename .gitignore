@@ -23,3 +23,5 @@ gradle-app.setting
 # Personal files
 telegram-bot/*.txt
 telegram-bot/*.json
+lunch-core/*.txt
+lunch-core/*.json

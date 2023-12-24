@@ -1,4 +1,4 @@
-package org.meatball.lunch.bot
+package org.meatball.lunch.bot.token
 
 import java.io.FileInputStream
 import java.util.Properties
