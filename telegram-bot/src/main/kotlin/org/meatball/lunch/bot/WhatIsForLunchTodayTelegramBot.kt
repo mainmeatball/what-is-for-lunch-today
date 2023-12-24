@@ -27,7 +27,7 @@ private val TG_BOT_TOKEN = getTelegramBotToken()
 
 class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
 
-    private val initDate = LocalDate.parse("2023-12-26")
+    private val initDate = LocalDate.now()
     private val userStateMap = ConcurrentHashMap<Long, TelegramBotState>()
 
     init {
