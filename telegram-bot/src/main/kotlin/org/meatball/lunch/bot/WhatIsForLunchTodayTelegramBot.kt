@@ -76,16 +76,21 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
         userStateMap[userId] = response.nextState
 
         // Sending text
-        sendText(userId, response.response)
+        sendText(userId, response)
     }
 
-    private fun sendText(userId: Long, text: String) {
-        val sm = SendMessage.builder()
+    private fun sendText(userId: Long, response: StateHandlerResponse) {
+        val smBuilder = SendMessage.builder()
             .chatId(userId)
-            .text(text)
-            .replyMarkup(constructKeyboard())
+            .text(response.text)
             .parseMode(ParseMode.MARKDOWNV2)
-            .build()
+
+        if (response.nextState == TelegramBotState.REGISTERED) {
+            smBuilder
+                .replyMarkup(constructKeyboard())
+        }
+
+        val sm = smBuilder.build()
 
         try {
             execute(sm)
