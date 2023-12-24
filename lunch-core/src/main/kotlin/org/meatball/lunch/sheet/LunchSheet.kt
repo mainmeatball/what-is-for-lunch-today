@@ -62,7 +62,7 @@ class LunchSheet(table: LunchTable) {
     }
 
     fun getFoodList(userLunchName: String, dayOfWeek: DayOfWeek): List<FoodData>? {
-        val personFoodTable = personToFoodList[userLunchName] ?: emptyMap()
+        val personFoodTable = personToFoodList[userLunchName] ?: return null
         return personFoodTable[dayOfWeek]
     }
 
