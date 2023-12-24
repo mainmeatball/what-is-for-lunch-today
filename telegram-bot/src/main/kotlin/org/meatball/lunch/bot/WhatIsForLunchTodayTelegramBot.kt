@@ -8,6 +8,8 @@ import org.meatball.lunch.bot.state.handler.impl.RegisteredStateHandler
 import org.meatball.lunch.bot.state.handler.impl.WaitingForRegisterDataStateHandler
 import org.meatball.lunch.bot.token.getTelegramBotToken
 import org.meatball.lunch.singletone.userService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.ParseMode
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
@@ -33,6 +35,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
     init {
         val allUsers = userService.getAllUsers()
         allUsers.keys.forEach { userStateMap[it] = TelegramBotState.REGISTERED }
+        logger.info("Telegram bot is available. Init date = $initDate")
     }
 
     override fun getBotUsername(): String = "What is for lunch today"
@@ -131,5 +134,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
 
         private val Message.isShowLunch: Boolean
             get() = text == "Показать заказ"
+
+        private val logger: Logger = LoggerFactory.getLogger(WhatIsForLunchTodayTelegramBot::class.java)
     }
 }
