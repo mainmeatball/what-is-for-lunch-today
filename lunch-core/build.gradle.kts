@@ -1,8 +1,10 @@
 plugins {
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
-    id("myproject.java-conventions")
 }
+
+group = "org.meatball.lunch"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
