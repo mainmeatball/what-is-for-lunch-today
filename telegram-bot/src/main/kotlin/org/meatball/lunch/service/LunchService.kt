@@ -8,7 +8,7 @@ class LunchService {
     fun getLunchData(userLunchName: String, date: LocalDate): String? {
         val lunchSheet = lunchSheetService.getLunchSheet(date)
         val foodList = lunchSheet.getFoodList(userLunchName, date) ?: return null
-        return toMarkdownText(foodList)
+        return toMarkdownText(foodList, date)
     }
 
     fun getAllUserLunchNames(date: LocalDate): Set<String> {
@@ -16,9 +16,12 @@ class LunchService {
         return lunchSheet.getAllUserLunchNames()
     }
 
-    private fun toMarkdownText(foodList: List<FoodData>): String {
+    private fun toMarkdownText(foodList: List<FoodData>, date: LocalDate): String {
         if (foodList.isEmpty()) {
-            return "Вы на сегодня ничего не заказывали"
+            val today = LocalDate.now()
+            val isRequestForToday = date == today
+            val l10date = if (isRequestForToday) "сегодня" else date.toString().replace(REGEX_MARKDOWN_V2_ESCAPE, "\\\\$1")
+            return "Вы ничего не заказывали на $l10date"
         }
         return foodList.joinToString("\n\n————————————————————\n\n") { it.toTextBlock() }
             .replace(REGEX_MARKDOWN_V2_ESCAPE, "\\\\$1")

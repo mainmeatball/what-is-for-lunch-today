@@ -29,13 +29,15 @@ private val TG_BOT_TOKEN = getTelegramBotToken()
 
 class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
 
-    private val initDate = LocalDate.now()
+    private val today = LocalDate.now()
+    private val tomorrow = today.plusDays(1L)
+
     private val userStateMap = ConcurrentHashMap<Long, TelegramBotState>()
 
     init {
         val allUsers = userService.getAllUsers()
         allUsers.keys.forEach { userStateMap[it] = TelegramBotState.REGISTERED }
-        logger.info("Telegram bot is available. Init date = $initDate")
+        logger.info("Telegram bot is available. Init date = $today")
     }
 
     override fun getBotUsername(): String = "What is for lunch today"
@@ -53,7 +55,8 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
         }
 
         if (msg.isShowLunch) {
-            val response = stateHandlerMap.getValue(TelegramBotState.REGISTERED).handle(userId, msg, initDate)
+            val showLunchDate = getShowLunchDate(msg)
+            val response = stateHandlerMap.getValue(TelegramBotState.REGISTERED).handle(userId, msg, showLunchDate)
 
             // Handling state handler response
             handleStateResponse(userId, response)
@@ -65,7 +68,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
 
         // Obtaining state handler
         val stateHandler = stateHandlerMap.getValue(userState)
-        val response = stateHandler.handle(userId, msg, initDate)
+        val response = stateHandler.handle(userId, msg, today)
 
         // Handling state handler response
         handleStateResponse(userId, response)
@@ -102,14 +105,14 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
 
     private fun constructKeyboard(): ReplyKeyboard {
         return ReplyKeyboardMarkup.builder()
-            .keyboardRow(KeyboardRow(listOf(constructShowLunchButton())))
-            .keyboardRow(KeyboardRow(listOf(constructReplyRegisterButton())))
+            .keyboardRow(KeyboardRow(listOf(constructShowLunchButton(SHOW_TODAY_LUNCH_TEXT))))
+            .keyboardRow(KeyboardRow(listOf(constructShowLunchButton(SHOW_TOMORROW_LUNCH_TEXT))))
             .build()
     }
 
-    private fun constructShowLunchButton(): KeyboardButton {
+    private fun constructShowLunchButton(text: String): KeyboardButton {
         return KeyboardButton.builder()
-            .text("Показать заказ")
+            .text(text)
             .build()
     }
 
@@ -125,6 +128,13 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
             .build()
     }
 
+    private fun getShowLunchDate(msg: Message): LocalDate {
+        return when {
+            msg.text == SHOW_TOMORROW_LUNCH_TEXT -> tomorrow
+            else -> today
+        }
+    }
+
     private companion object {
         // State handlers
         private val stateHandlerMap = mapOf(
@@ -134,11 +144,14 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
         )
         private val registerCommandHandler = RegisterCommandHandler()
 
+        private const val SHOW_TODAY_LUNCH_TEXT = "Показать заказ на сегодня"
+        private const val SHOW_TOMORROW_LUNCH_TEXT = "Показать заказ на завтра"
+
         private val Message.isRegister: Boolean
-            get() = text == "Зарегистрироваться"
+            get() = text == "Зарегистрироваться" || (isCommand && text == "/register")
 
         private val Message.isShowLunch: Boolean
-            get() = text == "Показать заказ"
+            get() = text == SHOW_TODAY_LUNCH_TEXT || text == SHOW_TOMORROW_LUNCH_TEXT
 
         private val logger: Logger = LoggerFactory.getLogger(WhatIsForLunchTodayTelegramBot::class.java)
     }
