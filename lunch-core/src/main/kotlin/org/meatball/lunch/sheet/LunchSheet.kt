@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 typealias LunchTable = List<List<Any>>
 
+private const val CATEGORY_NAME_COL = 0
 private const val FOOD_NAME_COL = 1
 private const val INGREDIENTS_COL = 2
 private const val WEIGHT_COL = 3
@@ -28,9 +29,10 @@ class LunchSheet(table: LunchTable) {
     private val rowToFoodName: Map<Int, FoodData> = table.getFoodColumn().asSequence().withIndex()
         .drop(FOOD_NAME_ROW_MIN)
         .take(FOOD_NAME_ROW_MAX)
-        .filterNot { it.value.isBlank() }
+        .filterNot { (row, foodName) -> foodName.isBlank() && table.getCategory(row).isBlank() }
         .associate {(row, foodName) ->
             row to FoodData(
+                category = table.getCategory(row),
                 name = foodName,
                 ingredients = table.getIngredients(row),
                 weight = table.getWeight(row),
@@ -84,6 +86,7 @@ class LunchSheet(table: LunchTable) {
 
         private fun LunchTable.getPeopleRow(): List<String> = this.getRow(PEOPLE_NAME_ROW)
 
+        private fun LunchTable.getCategory(rowN: Int): String = this.getCell(CATEGORY_NAME_COL, rowN)
         private fun LunchTable.getIngredients(rowN: Int): String = this.getCell(INGREDIENTS_COL, rowN)
         private fun LunchTable.getWeight(rowN: Int): String = this.getCell(WEIGHT_COL, rowN)
         private fun LunchTable.getCalories(rowN: Int): String = this.getCell(CALORIES_COL, rowN)

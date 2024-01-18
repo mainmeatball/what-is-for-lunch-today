@@ -1,6 +1,7 @@
 package org.meatball.lunch.food
 
 data class FoodData(
+    val category: String,
     val name: String,
     val ingredients: String,
     val weight: String,

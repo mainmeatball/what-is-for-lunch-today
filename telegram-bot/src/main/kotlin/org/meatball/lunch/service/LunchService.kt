@@ -28,8 +28,9 @@ class LunchService {
     }
 
     private fun FoodData.toTextBlock(): String {
+        val foodName = name.ifBlank { category }
         return """
-            **$name**
+            **$foodName**
             **Вес:** $weight г.
             
             **  К   |  Б  |  Ж  |  У**
