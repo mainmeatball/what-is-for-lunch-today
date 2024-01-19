@@ -6,5 +6,5 @@ import java.time.LocalDate
 
 interface TelegramBotStateHandler {
 
-    fun handle(userId: Long, msg: Message, date: LocalDate? = null): StateHandlerResponse
+    fun handle(userId: String, msg: Message, date: LocalDate? = null): StateHandlerResponse
 }

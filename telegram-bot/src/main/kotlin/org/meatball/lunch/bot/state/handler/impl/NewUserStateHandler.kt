@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 class NewUserStateHandler : TelegramBotStateHandler {
 
-    override fun handle(userId: Long, msg: Message, date: LocalDate?): StateHandlerResponse {
+    override fun handle(userId: String, msg: Message, date: LocalDate?): StateHandlerResponse {
         val userLunchName = userService.getLunchName(userId)
             ?: return StateHandlerResponse(
                 "Для начала работы необходимо зарегистрироваться\\. Введите свои Фамилию Имя, как в гугл таблице",

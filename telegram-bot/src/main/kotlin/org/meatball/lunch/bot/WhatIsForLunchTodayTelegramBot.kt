@@ -32,7 +32,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
     private val today = LocalDate.now()
     private val tomorrow = today.plusDays(1L)
 
-    private val userStateMap = ConcurrentHashMap<Long, TelegramBotState>()
+    private val userStateMap = ConcurrentHashMap<String, TelegramBotState>()
 
     init {
         val allUsers = userService.getAllUsers()
@@ -44,7 +44,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
 
     override fun onUpdateReceived(update: Update) {
         val msg = update.message
-        val userId = msg.from.id
+        val userId = msg.from.id.toString()
 
         if (msg.isRegister) {
             val response = registerCommandHandler.handle(userId, msg)
@@ -74,7 +74,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
         handleStateResponse(userId, response)
     }
 
-    private fun handleStateResponse(userId: Long, response: StateHandlerResponse) {
+    private fun handleStateResponse(userId: String, response: StateHandlerResponse) {
         // Memorizing user state
         userStateMap[userId] = response.nextState
 
@@ -82,7 +82,7 @@ class WhatIsForLunchTodayTelegramBot : TelegramLongPollingBot(TG_BOT_TOKEN) {
         sendText(userId, response)
     }
 
-    private fun sendText(userId: Long, response: StateHandlerResponse) {
+    private fun sendText(userId: String, response: StateHandlerResponse) {
         val smBuilder = SendMessage.builder()
             .chatId(userId)
             .text(response.text)

@@ -4,21 +4,21 @@ import java.util.concurrent.ConcurrentHashMap
 
 class UserDao {
 
-    private val users = ConcurrentHashMap<Long, String>()
+    private val users = ConcurrentHashMap<String, String>()
 
     init {
         users += readUsersFromDisk()
     }
 
-    fun getLunchName(userId: Long): String? {
+    fun getLunchName(userId: String): String? {
         return users[userId]
     }
 
-    fun getAllUsers(): Map<Long, String> {
+    fun getAllUsers(): Map<String, String> {
         return users.toMap() // copy
     }
 
-    fun register(userId: Long, lunchSheetName: String): Boolean {
+    fun register(userId: String, lunchSheetName: String): Boolean {
         users[userId] = lunchSheetName
         writeUsersToDisk(users)
         return true

@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 class RegisteredStateHandler : TelegramBotStateHandler {
 
-    override fun handle(userId: Long, msg: Message, date: LocalDate?): StateHandlerResponse {
+    override fun handle(userId: String, msg: Message, date: LocalDate?): StateHandlerResponse {
         val effectiveDate = date ?: LocalDate.now()
         val userLunchName = userService.getLunchName(userId)
             ?: return StateHandlerResponse(

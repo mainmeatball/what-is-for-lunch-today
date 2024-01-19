@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 class RegisterCommandHandler : TelegramBotStateHandler {
 
-    override fun handle(userId: Long, msg: Message, date: LocalDate?): StateHandlerResponse {
+    override fun handle(userId: String, msg: Message, date: LocalDate?): StateHandlerResponse {
         return StateHandlerResponse(
             "Введите свои Фамилию Имя, как в гугл таблице",
             TelegramBotState.WAITING_FOR_REGISTER_DATA

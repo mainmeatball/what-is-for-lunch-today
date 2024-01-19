@@ -11,7 +11,7 @@ import java.time.LocalDate
 
 class WaitingForRegisterDataStateHandler : TelegramBotStateHandler {
 
-    override fun handle(userId: Long, msg: Message, date: LocalDate?): StateHandlerResponse {
+    override fun handle(userId: String, msg: Message, date: LocalDate?): StateHandlerResponse {
         val userLunchName = msg.text
         if (userLunchName.isBlank()) {
             return StateHandlerResponse("You entered blank username", TelegramBotState.WAITING_FOR_REGISTER_DATA)
