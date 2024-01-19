@@ -21,7 +21,7 @@ class SlackApplication {
     private val slackAppConfig = getSlackAppConfig()
     private val slackApp = App(slackAppConfig)
 
-    private val today = LocalDate.parse("2024-01-23")
+    private var today = LocalDate.parse("2024-01-23")
 
     private val registeredUserIds = ConcurrentHashMap.newKeySet<String>()
 
@@ -37,6 +37,8 @@ class SlackApplication {
         }
 
         slackApp.event(AppHomeOpenedEvent::class.java) { e, ctx ->
+            updateDateIfChanged()
+
             val userId = e.event.user
 
             if (userId !in registeredUserIds) {
@@ -84,6 +86,13 @@ class SlackApplication {
                 .userId(userId)
                 .view(view)
                 .hash(view.hash)
+        }
+    }
+
+    private fun updateDateIfChanged() {
+        val now = LocalDate.now()
+        if (today != now) {
+            today = now
         }
     }
 
