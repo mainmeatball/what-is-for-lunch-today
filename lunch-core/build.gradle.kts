@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation("com.google.apis:google-api-services-sheets:v4-rev20220927-2.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 tasks.test {

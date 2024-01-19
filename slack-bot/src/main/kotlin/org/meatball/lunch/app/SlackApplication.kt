@@ -3,6 +3,7 @@ package org.meatball.lunch.app
 import com.slack.api.bolt.App
 import com.slack.api.bolt.jetty.SlackAppServer
 import com.slack.api.model.event.AppHomeOpenedEvent
+import org.meatball.lunch.config.getAppProperties
 import org.meatball.lunch.config.getSlackAppConfig
 import org.meatball.lunch.food.FoodData
 import org.meatball.lunch.singletone.lunchService
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 class SlackApplication {
 
+    private val appProperties = getAppProperties()
     private val slackAppConfig = getSlackAppConfig()
     private val slackApp = App(slackAppConfig)
 
@@ -69,7 +71,7 @@ class SlackApplication {
             ctx.ack()
         }
 
-        val server = SlackAppServer(slackApp)
+        val server = SlackAppServer(slackApp, appProperties.port)
         server.start()
     }
 
