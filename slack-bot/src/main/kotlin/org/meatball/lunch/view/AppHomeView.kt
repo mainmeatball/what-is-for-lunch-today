@@ -7,8 +7,8 @@ import org.meatball.lunch.food.FoodData
 import org.meatball.lunch.singletone.lunchService
 import java.time.LocalDate
 
-fun homeTabView(userId: String, date: LocalDate, foodList: List<FoodData>? = null, msg: String? = null): View {
-    val todayLunch = msg?.let { emptyList() } ?: foodList ?: lunchService.getFoodList(userId, date) ?: emptyList()
+fun homeTabView(userLunchName: String?, date: LocalDate, foodList: List<FoodData>? = null, msg: String? = null): View {
+    val todayLunch = msg?.let { emptyList() } ?: foodList ?: lunchService.getFoodList(userLunchName!!, date) ?: emptyList()
 
     val view = view {
         it

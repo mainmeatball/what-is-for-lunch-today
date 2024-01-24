@@ -79,7 +79,6 @@ class SlackApplication {
 
     private fun publishHomeTabView(userId: String, foodList: List<FoodData>? = null, text: String? = null) {
         val userLunchName = userService.getLunchName(userId)
-            ?: throw IllegalStateException("User (id=$userId) is registered, but anyway not found")
         slackApp.client.viewsPublish {
             val view = homeTabView(userLunchName, today, foodList, text)
             it.token(slackAppConfig.singleTeamBotToken)
