@@ -21,7 +21,7 @@ class SlackApplication {
     private val slackAppConfig = getSlackAppConfig()
     private val slackApp = App(slackAppConfig)
 
-    private var today = LocalDate.parse("2024-01-23")
+    private var today = LocalDate.now()
 
     private val registeredUserIds = ConcurrentHashMap.newKeySet<String>()
 

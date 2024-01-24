@@ -8,7 +8,7 @@ group = "org.meatball.lunch"
 version = "1.0-SNAPSHOT"
 
 application {
-    mainClass = "org.meatball.lunch.MainKt"
+    mainClass = "org.meatball.lunch.TelegramMainKt"
 }
 
 repositories {
@@ -27,7 +27,7 @@ tasks.withType<Jar> {
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
     manifest {
-        attributes["Main-Class"] = "org.meatball.lunch.MainKt"
+        attributes["Main-Class"] = "org.meatball.lunch.TelegramMainKt"
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -43,5 +43,5 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(11)
 }
