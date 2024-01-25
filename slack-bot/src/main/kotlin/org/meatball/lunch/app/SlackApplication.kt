@@ -73,7 +73,7 @@ class SlackApplication {
             ctx.ack()
         }
 
-        val server = SlackAppServer(slackApp, appProperties.port)
+        val server = SlackAppServer(slackApp, appProperties.endpoint, appProperties.port)
         server.start()
     }
 
