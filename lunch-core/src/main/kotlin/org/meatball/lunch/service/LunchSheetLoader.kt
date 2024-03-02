@@ -37,3 +37,15 @@ fun loadLunchSheet(spreadsheetId: String, sheetName: String): LunchSheet {
 
     return LunchSheet(rows)
 }
+
+fun loadLunchSheetNames(spreadsheetId: String): List<String> {
+    val sheets = Sheets.Builder(httpTransport, JSON_FACTORY, httpRequestInitializer)
+        .setApplicationName(GOOGLE_API_APP_NAME)
+        .build()
+
+    val response = sheets.spreadsheets()
+        .get(spreadsheetId)
+        .execute()
+
+    return response.sheets.map { it.properties.title }
+}

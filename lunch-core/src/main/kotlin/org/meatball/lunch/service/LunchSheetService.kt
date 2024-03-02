@@ -4,7 +4,6 @@ import org.meatball.lunch.config.getLunchSpreadsheetId
 import org.meatball.lunch.sheet.LunchSheet
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
@@ -42,6 +41,14 @@ class LunchSheetService {
     }
 
     private fun calculateSheetName(date: LocalDate): String {
+        val sheetNames = loadLunchSheetNames(lunchSpreadsheetId)
+        for (rawSheetName in sheetNames.reversed()) {
+            val (from, to) = tryParseSheetName(rawSheetName) ?: continue
+            if (date in from..to) {
+                return rawSheetName
+            }
+        }
+
         val mondayDiff = date.dayOfWeek.value.toLong() - 1L
         val monday = date.minusDays(mondayDiff)
         val friday = monday.plusDays(DayOfWeek.FRIDAY.value.toLong() - DayOfWeek.MONDAY.value.toLong())
@@ -50,9 +57,14 @@ class LunchSheetService {
     }
 
     private fun parseSheetName(lunchSheetName: String): Pair<LocalDate, LocalDate> {
+        return tryParseSheetName(lunchSheetName)
+            ?: throw IllegalStateException("Lunch sheet name = $lunchSheetName is illegal. Should be named in format dd.MM-dd.MM")
+    }
+
+    private fun tryParseSheetName(lunchSheetName: String): Pair<LocalDate, LocalDate>? {
         val dates = lunchSheetName.split('-')
         if (dates.size != 2) {
-            throw IllegalStateException("Lunch sheet name = $lunchSheetName is illegal. Should be named in format dd.MM-dd.MM")
+            return null
         }
         val from = LocalDate.parse(dates.first(), dateFormat)
         val to = LocalDate.parse(dates.last(), dateFormat)
