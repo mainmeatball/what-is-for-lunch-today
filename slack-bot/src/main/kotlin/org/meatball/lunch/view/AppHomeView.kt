@@ -14,7 +14,7 @@ fun homeTabView(userLunchName: String?, today: LocalDate, foodList: List<FoodDat
     val todayLunch = msg?.let { emptyList() } ?: foodList ?: lunchService.getFoodList(userLunchName!!, today) ?: emptyList()
     val tomorrow = today.plusDays(1L)
     val tomorrowLunch = if (tomorrow.isWorkingDay()) {
-        msg?.let { emptyList() } ?: foodList ?: lunchService.getFoodList(userLunchName!!, tomorrow) ?: emptyList()
+        msg?.let { emptyList() } ?: lunchService.getFoodList(userLunchName!!, tomorrow) ?: emptyList()
     } else {
         emptyList()
     }
