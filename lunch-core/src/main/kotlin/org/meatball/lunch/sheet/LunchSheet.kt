@@ -74,11 +74,15 @@ class LunchSheet(table: LunchTable) {
 
     private fun LunchTable.getPersonFoodRows(startColN: Int, offset: Int): List<Int> {
         val actualColN = startColN + offset
-        return getColumn(actualColN).asSequence().withIndex()
+        val resultIndices = mutableListOf<Int>()
+        getColumn(actualColN).asSequence().withIndex()
             .drop(PEOPLE_FOOD_ROW_MIN)
-            .filter { it.value == "1" }
-            .map { it.index }
-            .toList()
+            .filterNot { it.value.isBlank() }
+            .forEach { food ->
+                val quantity = food.value.trim().toInt()
+                repeat(quantity) { resultIndices += food.index }
+            }
+        return resultIndices
     }
 
     private companion object {
