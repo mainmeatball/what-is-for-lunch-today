@@ -80,7 +80,7 @@ class SlackApplication {
     private fun publishHomeTabView(userId: String, foodList: List<FoodData>? = null, text: String? = null) {
         val userLunchName = userService.getLunchName(userId)
         slackApp.client.viewsPublish {
-            val view = homeTabView(userLunchName, today, foodList, text)
+            val view = homeTabView(userLunchName, userId, today, foodList, text)
             it.token(slackAppConfig.singleTeamBotToken)
                 .userId(userId)
                 .view(view)

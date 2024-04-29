@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 
-fun homeTabView(userLunchName: String?, today: LocalDate, foodList: List<FoodData>? = null, msg: String? = null): View {
+fun homeTabView(userLunchName: String?, userId: String, today: LocalDate, foodList: List<FoodData>? = null, msg: String? = null): View {
     val todayLunch = msg?.let { emptyList() } ?: foodList ?: lunchService.getFoodList(userLunchName!!, today) ?: emptyList()
     val tomorrow = today.plusDays(1L)
     val tomorrowLunch = if (tomorrow.isWorkingDay()) {
