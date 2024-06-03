@@ -66,16 +66,20 @@ class LunchSheetService {
         if (dates.size != 2) {
             return null
         }
-        val from = LocalDate.parse(dates.first(), dateFormat)
-        val to = LocalDate.parse(dates.last(), dateFormat)
+        val from = LocalDate.parse(dates.first(), dateFormatFrom)
+        val to = LocalDate.parse(dates.last(), dateFormatTo)
         return from to to
     }
 
     private companion object {
         private val currentYear = LocalDate.now().year.toLong()
-        private val dateFormat = DateTimeFormatterBuilder()
+        private val dateFormatFrom = DateTimeFormatterBuilder()
             .parseDefaulting(ChronoField.YEAR, currentYear)
-            .appendPattern("dd.MM")
+            .appendPattern("[dd.MM]" + "[d.MM]")
+            .toFormatter()
+        private val dateFormatTo = DateTimeFormatterBuilder()
+            .parseDefaulting(ChronoField.YEAR, currentYear)
+            .appendPattern("[dd.MM]" + "[d.MM]")
             .toFormatter()
     }
 }
