@@ -53,7 +53,7 @@ class LunchSheet(table: LunchTable) {
         for (dayOfWeek in 1..WORKING_DAYS_N) {
             val foodRows = table.getPersonFoodRows(startColN, dayOfWeek - 1)
             val currentDayOfWeek = DayOfWeek.of(dayOfWeek)
-            map[currentDayOfWeek] = foodRows.map { rowToFoodName[it] ?: error("No food name found on row $it") }
+            map[currentDayOfWeek] = foodRows.map { rowToFoodName[it] ?: emptyFood(it) }
         }
         personName to map.toMap()
     }
@@ -110,6 +110,8 @@ class LunchSheet(table: LunchTable) {
         }
 
         private fun LunchTable.getCell(colN: Int, rowN: Int): String = this[rowN][colN] as String
+
+        private fun emptyFood(rowN: Int) = FoodData("", "Пустая строка $rowN", "", "", "", "", "", "")
     }
 }
 
