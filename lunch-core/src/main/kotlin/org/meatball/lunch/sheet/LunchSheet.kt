@@ -53,7 +53,7 @@ class LunchSheet(table: LunchTable) {
         for (dayOfWeek in 1..WORKING_DAYS_N) {
             val foodRows = table.getPersonFoodRows(startColN, dayOfWeek - 1)
             val currentDayOfWeek = DayOfWeek.of(dayOfWeek)
-            map[currentDayOfWeek] = foodRows.map { rowToFoodName[it] ?: emptyFood(it) }
+            map[currentDayOfWeek] = foodRows.map { rowToFoodName[it] ?: emptyFood(it + 1) }
         }
         personName to map.toMap()
     }
