@@ -4,11 +4,11 @@ plugins {
     kotlin("plugin.serialization") version "1.9.21"
 }
 
-group = "org.meatball.lunch"
+group = "org.meatball.traveldesign"
 version = "1.0-SNAPSHOT"
 
 application {
-    mainClass = "org.meatball.lunch.TelegramMainKt"
+    mainClass = "org.meatball.travel.TelegramMainKt"
 }
 
 repositories {
@@ -19,7 +19,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.9")
     implementation("org.telegram:telegrambots:6.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    implementation(project(":lunch-core"))
+    implementation(project(":td-core"))
 }
 
 tasks.withType<Jar> {
@@ -27,7 +27,7 @@ tasks.withType<Jar> {
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
     manifest {
-        attributes["Main-Class"] = "org.meatball.lunch.TelegramMainKt"
+        attributes["Main-Class"] = "org.meatball.travel.TelegramMainKt"
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -43,5 +43,5 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
