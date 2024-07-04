@@ -46,7 +46,7 @@ class LunchSheet(table: LunchTable) {
     private val personToStartCol = table.getPeopleRow().asSequence().withIndex()
         .drop(PEOPLE_NAME_COL_MIN)
         .filterNot { it.value.isBlank() }
-        .associate { it.value to it.index }
+        .associate { it.value.trim() to it.index }
 
     private val personToFoodList: Map<String, Map<DayOfWeek, List<FoodData>>> = personToStartCol.entries.associate { (personName, startColN) ->
         val map = mutableMapOf<DayOfWeek, List<FoodData>>()
